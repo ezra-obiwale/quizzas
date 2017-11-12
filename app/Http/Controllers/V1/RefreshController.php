@@ -5,7 +5,7 @@ namespace App\Http\Controllers\V1;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tymon\JWTAuth\JWTAuth;
 use App\Http\Controllers\Controller;
-use App\Requests\V1\LoginRequest;
+use App\Http\Requests\V1\LoginRequest;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Auth;

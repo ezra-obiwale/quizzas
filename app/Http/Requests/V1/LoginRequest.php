@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Requests\V1;
+namespace App\Http\Requests\V1;
 
 use Config;
 use Dingo\Api\Http\FormRequest;

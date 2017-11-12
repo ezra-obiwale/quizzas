@@ -5,7 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Entities\V1\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Password;
-use App\Requests\V1\ForgotPasswordRequest;
+use App\Http\Requests\V1\ForgotPasswordRequest;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
