@@ -22,7 +22,7 @@ return [
 
         // here you can specify some validation rules for your login request
         'validation_rules' => [
-            'emailOrUsername' => 'required',
+            'email' => 'required|email',
             'password' => 'required'
         ]
     ],
