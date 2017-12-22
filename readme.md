@@ -9,7 +9,7 @@ It is built on top of three big guys:
 * Laravel-CORS [barryvdh/laravel-cors](http://github.com/barryvdh/laravel-cors)
 * Laraquick [ezraobiwale/laraquick](https://github.com/ezra-obiwale/laraquick)
 
-What I made is really simple: an integration of these three packages and a setup of some authentication and credentials recovery methods.
+What I made is really simple: an integration of these four packages and a setup of some authentication and credentials recovery methods.
 
 ## Installation
 
