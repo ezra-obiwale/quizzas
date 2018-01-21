@@ -7,7 +7,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateUsersTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations.t
      *
      * @return void
      */
@@ -16,8 +16,17 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('password');
+            $table->string('username', 15)->nullable();
+            $table->string('photo')->nullable();
+            $table->string('slug')->unique()->nullable();
+            $table->string('api_token')->nullable();
+            $table->boolean('verified')->default(false);
+            $table->string('token')->nullable();
+            $table->boolean('active')->nullable()->default(true);
+            $table->integer('opinions')->nullable()->default(0);
+            $table->integer('expressions')->nullable()->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

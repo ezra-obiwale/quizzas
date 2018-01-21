@@ -2,18 +2,20 @@
 
 Laravel API Boilerplate is a "starter kit" you can use to build your first API in seconds. As you can easily imagine, it is built on top of the awesome Laravel Framework. This version is built on Laravel 5.5!
 
-It is built on top of three big guys:
+It is built on top some big guys:
 
 * JWT-Auth - [tymondesigns/jwt-auth](https://github.com/tymondesigns/jwt-auth)
 * Dingo API - [dingo/api](https://github.com/dingo/api)
-* Laravel-CORS [barryvdh/laravel-cors](http://github.com/barryvdh/laravel-cors)
-* Laraquick [ezraobiwale/laraquick](https://github.com/ezra-obiwale/laraquick)
+* Laravel-CORS - [barryvdh/laravel-cors](http://github.com/barryvdh/laravel-cors)
+* Laraquick - [ezraobiwale/laraquick](https://github.com/ezra-obiwale/laraquick)
+* Socialite - [laravel/socialite](https://github.com/laravel/socialite)
+* Voyager [vcg/voyager](https://github.com/the-control-group/voyager)
 
-What I made is really simple: an integration of these four packages and a setup of some authentication and credentials recovery methods.
+What I made is really simple: an integration of these packages and a setup of some authentication and credentials recovery methods.
 
 ## Installation
 
-1. run `composer create-project francescomalatesta/laravel-api-boilerplate-jwt myNextProject`;
+1. run `composer create-project ezraobiwale/laravel-api-boilerplate-jwt myNextProject`;
 2. have a coffee, nothing to do here;
 
 Once the project creation procedure will be completed, run the `php artisan migrate` command to install the required tables.

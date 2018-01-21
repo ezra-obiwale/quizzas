@@ -4,13 +4,13 @@ namespace App\Http\Controllers\V1;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tymon\JWTAuth\JWTAuth;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\LoginRequest;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Auth;
+use App\Entities\V1\User;
 
-class UserController extends Controller
+class UserController extends SuperController
 {
     /**
      * Create a new AuthController instance.
@@ -20,6 +20,19 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api', []);
+    }
+
+    protected function model() {
+        return User::class;
+    }
+
+    protected function validationRules(array $data, $id = null) {
+        return [
+            'name' => 'required',
+            'email' => 'required|email',
+            'photo' => 'file',
+            'username' => 'unique',
+        ];
     }
 
     /**

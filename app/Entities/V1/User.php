@@ -3,11 +3,13 @@
 namespace App\Entities\V1;
 
 use Hash;
+use Tymon\JWTAuth\Contracts\JWTSubject;use Auth;
+use Mail;
+use App\Mail\ConfirmationAccount;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use TCG\Voyager\Models\User as TCGUser;
 
-class User extends Authenticatable implements JWTSubject
+class User extends TCGUser implements JWTSubject
 {
     use Notifiable;
 
@@ -17,7 +19,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'photo', 'city', 'country', 'slug', 'username'
     ];
 
     /**
@@ -26,8 +28,32 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'api_token', 'token', 'role_id'
     ];
+
+    /**
+     *
+     * Boot the model.
+     *
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(function($builder) {
+            $builder->with('roles');
+        });
+
+        static::creating(function ($user) {
+            $user->token = str_random(40);
+            
+            $username = preg_replace('/[^a-z0-9]/', '', strtolower($user->name));
+            if (strlen($username) > 15)
+                $username = substr($username, 0, 15);
+                
+            $user->username = $username;
+        });
+    }
 
     /**
      * Automatically creates hash for the user password.
@@ -38,6 +64,19 @@ class User extends Authenticatable implements JWTSubject
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);
+    }
+
+    /**
+     * Confirm the user.
+     *
+     * @return void
+     */
+    public function confirmEmail()
+    {
+        $this->verified = true;
+        $this->token = null;
+
+        $this->save();
     }
 
     /**
@@ -58,5 +97,36 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function roles() {
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Fetches the appropriate slug for a user
+     *
+     * @return string
+     */
+    public function slug()
+    {
+        return $this->username ? : $this->slug;
+    }
+
+    public function isAdmin()
+    {
+        return $this->roles()->where('name', 'admin')->count() > 0;
+    }
+
+    public function toArray()
+    {
+        $array = parent::toArray();
+        $array['slug'] = $this->slug();
+        return $array;
+    }
+
+    public function sendRegistrationEmail()
+    {
+        Mail::to($this->email)->send(new ConfirmationAccount($this));
     }
 }

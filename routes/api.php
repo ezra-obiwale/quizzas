@@ -6,7 +6,7 @@ use Dingo\Api\Routing\Router;
 $api = app(Router::class);
 
 $api->version('v1', function (Router $api) {
-    $api->group(['prefix' => 'auth', 'namespace' => 'App\Http\Controllers\V1'], function(Router $api) {
+    $api->group(['prefix' => 'auth', 'namespace' => 'App\Http\Controllers\V1\Auth'], function(Router $api) {
         $api->post('signup', 'SignUpController@signUp');
         $api->post('login', 'LoginController@login');
 
