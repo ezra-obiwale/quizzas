@@ -15,18 +15,19 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('role_id');
             $table->string('name');
             $table->string('email')->unique()->nullable();
             $table->string('password');
-            $table->string('username', 15)->nullable();
             $table->string('photo')->nullable();
-            $table->string('slug')->unique()->nullable();
-            $table->string('api_token')->nullable();
             $table->boolean('verified')->default(false);
             $table->string('token')->nullable();
             $table->boolean('active')->nullable()->default(true);
-            $table->rememberToken();
+
             $table->timestamps();
+
+            $table->foreign('role_id')->on('roles')
+                ->references('id');
         });
     }
 

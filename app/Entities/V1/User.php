@@ -3,7 +3,8 @@
 namespace App\Entities\V1;
 
 use Hash;
-use Tymon\JWTAuth\Contracts\JWTSubject;use Auth;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Auth;
 use Mail;
 use App\Mail\ConfirmationAccount;
 use Illuminate\Notifications\Notifiable;
@@ -19,7 +20,7 @@ class User extends TCGUser implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'photo', 'city', 'country', 'slug', 'username'
+        'role_id', 'name', 'email', 'password', 'photo', 'token', 'verified', 'active'
     ];
 
     /**
@@ -28,7 +29,7 @@ class User extends TCGUser implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'api_token', 'token', 'role_id'
+        'password', 'token'
     ];
 
     /**
@@ -40,18 +41,12 @@ class User extends TCGUser implements JWTSubject
     {
         parent::boot();
 
-        static::addGlobalScope(function($builder) {
-            $builder->with('roles');
+        static::addGlobalScope(function ($builder) {
+            $builder->with('role');
         });
 
         static::creating(function ($user) {
             $user->token = str_random(40);
-            
-            $username = preg_replace('/[^a-z0-9]/', '', strtolower($user->name));
-            if (strlen($username) > 15)
-                $username = substr($username, 0, 15);
-                
-            $user->username = $username;
         });
     }
 
@@ -99,34 +94,39 @@ class User extends TCGUser implements JWTSubject
         return [];
     }
 
-    public function roles() {
-        return $this->belongsToMany(Role::class);
-    }
-
-    /**
-     * Fetches the appropriate slug for a user
-     *
-     * @return string
-     */
-    public function slug()
+    public function role()
     {
-        return $this->username ? : $this->slug;
+        return $this->belongsTo(Role::class);
     }
 
     public function isAdmin()
     {
-        return $this->roles()->where('name', 'admin')->count() > 0;
-    }
-
-    public function toArray()
-    {
-        $array = parent::toArray();
-        $array['slug'] = $this->slug();
-        return $array;
+        return $this->role->name == 'admin';
     }
 
     public function sendRegistrationEmail()
     {
         Mail::to($this->email)->send(new ConfirmationAccount($this));
+    }
+
+    public function verifyPassword($password)
+    {
+        return Hash::check($password, $this->password);
+    }
+
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
+    }
+
+    public function attemptedQuizzes()
+    {
+        return $this->belongsToMany(Quiz::class, 'user_quiz_attempts')
+            ->withTimestamps();
+    }
+
+    public function responses()
+    {
+        return $this->hasMany(QuizResponses::class)->with('question');
     }
 }

@@ -14,7 +14,7 @@ class SocialController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['guest', 'web']);
+        $this->middleware(['guest']);
     }
 
     public function redirectToProvider($provider) {
@@ -46,15 +46,9 @@ class SocialController extends Controller
                 'name' => $user->name,
                 'email' => $email,
                 'password' => bcrypt(str_random(16)),
-                'token' => str_random(64),
-                'slug' => $this->newSlug($user->name),
-                'avatar' => $user->getAvatar()
+                'photo' => $user->getAvatar()
             ]);
             $socialUser->confirmEmail();
-            $socialUser->save();
-        }
-        if (!$socialUser->roles()->count()) {
-            $socialUser->roles()->attach(Role::where('name', 'barttar')->first()->id);
         }
 
         $token = Auth::login($socialUser, true);
@@ -67,33 +61,5 @@ class SocialController extends Controller
                 'expires' => $expires
             ]
         ];
-    }
-
-    /**
-     * Check if a slug exists in the user database.
-     *
-     * @param  variable  $data
-     * @return boolean
-     */
-    private function slugExist($slug)
-    {
-        return (User::where('slug', $slug)->first()) ? true : false;
-    }
-
-    /**
-     * Generate unique slug.
-     *
-     * @param  variable  $data
-     * @return $data
-     */
-    private function newSlug($name)
-    {
-        $i =1;
-        $slug = str_slug($name);
-        $baseSlug = $slug;
-        while ($this->slugExist($slug)) {
-            $slug = $baseSlug . "-" . $i++;
-        }
-        return $slug;
     }
 }

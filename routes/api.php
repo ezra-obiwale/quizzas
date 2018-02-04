@@ -6,7 +6,7 @@ use Dingo\Api\Routing\Router;
 $api = app(Router::class);
 
 $api->version('v1', function (Router $api) {
-    $api->group(['prefix' => 'auth', 'namespace' => 'App\Http\Controllers\V1\Auth'], function(Router $api) {
+    $api->group(['prefix' => 'auth', 'namespace' => 'App\Http\Controllers\V1\Auth'], function (Router $api) {
         $api->post('signup', 'SignUpController@signUp');
         $api->post('login', 'LoginController@login');
 
@@ -15,29 +15,34 @@ $api->version('v1', function (Router $api) {
 
         $api->post('logout', 'LogoutController@logout');
         $api->post('refresh', 'RefreshController@refresh');
-        $api->get('me', 'UserController@me');
+        $api->get('user', 'UserController@me');
     });
 
-    $api->group(['middleware' => 'jwt.auth'], function(Router $api) {
-        $api->get('protected', function() {
-            return response()->json([
-                'message' => 'Access to protected resources granted! You are seeing this text as you provided the token correctly.'
-            ]);
-        });
-
+    $api->group([
+        'middleware' => 'jwt.auth',
+        'namespace' => 'App\Http\Controllers\V1'
+    ], function (Router $api) {
         $api->get('refresh', [
             'middleware' => 'jwt.refresh',
-            function() {
+            function () {
                 return response()->json([
                     'message' => 'By accessing this endpoint, you can refresh your access token at each request. Check out this response headers!'
                 ]);
             }
         ]);
-    });
 
-    $api->get('hello', function() {
-        return response()->json([
-            'message' => 'This is a simple example of item returned by your APIs. Everyone can see it.'
-        ]);
+        $api->post('user/change-password', 'Auth\UserController@changePassword');
+        $api->get('user/quizzes', 'Auth\UserController@quizzes');
+        $api->get('users/attempted-quizzes', 'QuizController@attemptedQuizzes');
+
+        $api->resource('quizzes', 'QuizController');
+        $api->get('quizzes/{quiz}/questions', 'QuizController@questions');
+        $api->get('quizzes/{quiz}/result/{attemptId}', 'QuizController@result');
+        $api->get('quizzes/{quiz}/users', 'QuizController@usersWithAttempts');
+        $api->get('quizzes/{quizId}/attempted/{attemptId}/questions-and-answers', 'Auth\UserController@attemptedQuestionsAndAnswers');
+
+        $api->resource('quiz-questions', 'QuizQuestionController', ['except' => ['index']]);
+        $api->get('quiz-questions/{quizQuestion}/responses', 'QuizQuestionController@responses');
+        $api->post('quiz-questions/{quizQuestionId}/respond', 'QuizQuestionController@respond');
     });
 });

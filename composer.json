@@ -13,13 +13,14 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
-        "laravel/framework": "5.5.*",
-        "tymon/jwt-auth": "dev-develop",
-        "dingo/api": "2.0.0-alpha1",
         "barryvdh/laravel-cors": "^0.9.3",
         "d-scribe/laraquick": "^3.0",
+        "dingo/api": "2.0.0-alpha1",
+        "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.0",
-        "tcg/voyager": "1.0.*"
+        "league/flysystem-aws-s3-v3": "^1.0",
+        "tcg/voyager": "1.0.*",
+        "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.4",
@@ -52,11 +53,13 @@
         ],
         "post-install-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "php artisan optimize"
+            "php artisan optimize",
+            "php artisan migrate --seed --path=database/migrations/v1 --force"
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+            "php artisan optimize",
+            "php artisan migrate --seed --path=database/migrations/v1 --force"
         ]
     },
     "config": {

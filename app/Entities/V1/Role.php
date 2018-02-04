@@ -3,10 +3,12 @@
 namespace App\Entities\V1;
 
 use TCG\Voyager\Models\Role as TCGRole;
+use Laraquick\Models\Traits\Helper;
 
 
 class Role extends TCGRole
 {
+    use Helper;
 
     protected $fillable = ['name', 'display_name'];
 
