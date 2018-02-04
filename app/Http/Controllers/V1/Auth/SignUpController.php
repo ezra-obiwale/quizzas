@@ -22,18 +22,31 @@ class SignUpController extends Controller
         if(!$user->save()) {
             throw new HttpException(500);
         }
+        $user->sendRegistrationEmail();
 
         if(!Config::get('boilerplate.sign_up.release_token')) {
             return response()->json([
                 'status' => 'ok'
             ], 201);
         }
-
         $token = $JWTAuth->fromUser($user);
         return response()->json([
             'status' => 'ok',
             'token' => $token,
             'expires_in' => Auth::guard()->factory()->getTTL() * 60
         ], 201);
+    }
+
+    public function confirm($token)
+    {
+        $user = User::where('token', $token)->first();
+        if (!$user) {
+            return response()->json('Resource not found', 404);
+        }
+
+        $user->confirmEmail();
+        return [
+            'status' => 'ok'
+        ];
     }
 }

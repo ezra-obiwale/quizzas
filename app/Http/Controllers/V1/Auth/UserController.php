@@ -10,6 +10,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Auth;
 use App\Entities\V1\User;
 use App\Http\Controllers\V1\SuperController;
+use Illuminate\Http\Request;
 
 class UserController extends SuperController
 {
@@ -48,13 +49,13 @@ class UserController extends SuperController
 
     public function changePassword(Request $request) {
         $request->validate([
-            'old_password' => 'required',
+            'current_password' => 'required',
             'new_password' => 'required'
         ]);
 
-        if (!Auth::user()->verifyPassword($request->old_password)) {
+        if (!Auth::user()->verifyPassword($request->current_password)) {
             return $this->validationError([
-                'old_password' => [
+                'current_password' => [
                     'Incorrect old password'
                 ]
             ]);
@@ -85,7 +86,7 @@ class UserController extends SuperController
      */
     public function attemptedQuizzes()
     {
-        $quizes = Auth::user()->attemptedQuizzes()->simplePaginate();
+        $quizzes = Auth::user()->attemptedQuizzes()->simplePaginate();
         return $this->paginatedList($quizzes->toArray());
     }
 

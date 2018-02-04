@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\V1\Auth\SignUpController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,6 +21,8 @@ Route::get('reset_password/{token}', ['as' => 'password.reset', function($token)
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('signup/confirm/{token}', SignUpController::class . '@confirm');
 
 
 Route::group(['prefix' => 'admin'], function () {

@@ -43,7 +43,7 @@ class ConfirmationAccount extends Mailable
                 'To start using your ' . config('app.name') . ' account, all you have to do is confirm your email address.'
             ],
             'actionText' => 'Confirm Now',
-            'actionUrl' => url("register/confirm/{$this->user->token}"),
+            'actionUrl' => url("signup/confirm/{$this->user->token}"),
             'salutation' => "Cheers,<br />" . config('app.name')
         ];
     }

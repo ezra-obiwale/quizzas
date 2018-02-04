@@ -9,10 +9,11 @@ use Mail;
 use App\Mail\ConfirmationAccount;
 use Illuminate\Notifications\Notifiable;
 use TCG\Voyager\Models\User as TCGUser;
+use Laraquick\Models\Traits\Helper;
 
 class User extends TCGUser implements JWTSubject
 {
-    use Notifiable;
+    use Notifiable, Helper;
 
     /**
      * The attributes that are mass assignable.
@@ -122,11 +123,13 @@ class User extends TCGUser implements JWTSubject
     public function attemptedQuizzes()
     {
         return $this->belongsToMany(Quiz::class, 'user_quiz_attempts')
-            ->withTimestamps();
+            ->withTimestamps()
+            ->as('attempted_quizzes');
     }
 
     public function responses()
     {
         return $this->hasMany(QuizResponses::class)->with('question');
     }
+
 }

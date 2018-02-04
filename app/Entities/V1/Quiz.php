@@ -8,6 +8,7 @@ class Quiz extends WithSoftDeletes
 {
     protected $fillable = ['user_id', 'name', 'minutes'];
     protected $table = 'quizzes';
+    protected $hidden = ['pivot'];
 
     public function user()
     {
@@ -22,7 +23,8 @@ class Quiz extends WithSoftDeletes
     public function usersWithAttempts()
     {
         return $this->belongsToMany(User::class, 'user_quiz_attempts')
-            ->withTimestamps();
+            ->withTimestamps()
+            ->as('attempt');
     }
 
     public function responses()
@@ -32,6 +34,13 @@ class Quiz extends WithSoftDeletes
 
     public function attempts() {
         return $this->hasMany(UserQuizAttempt::class);
+    }
+
+    public function toArray()
+    {
+        $array = parent::toArray();
+        unset($array['pivot']);
+        return $array;
     }
 
 }
