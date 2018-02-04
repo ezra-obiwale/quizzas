@@ -64,7 +64,7 @@ class QuizQuestionController extends SuperController
 
         $attempt = UserQuizAttempt::find($request->attempt_id);
         $response = $quizQuestion->responses()
-            ->where('attempt_id', $request->id)
+            ->where('attempt_id', $request->attempt_id)
             ->where('user_id', Auth::id())
             ->first();
 
