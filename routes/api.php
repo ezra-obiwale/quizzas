@@ -9,6 +9,7 @@ $api->version('v1', function (Router $api) {
     $api->group(['prefix' => 'auth', 'namespace' => 'App\Http\Controllers\V1\Auth'], function (Router $api) {
         $api->post('signup', 'SignUpController@signUp');
         $api->post('login', 'LoginController@login');
+        $api->post('social/{type}', 'SocialController@handleProviderCallback');
 
         $api->post('recovery', 'ForgotPasswordController@sendResetEmail');
         $api->post('reset', 'ResetPasswordController@resetPassword');
