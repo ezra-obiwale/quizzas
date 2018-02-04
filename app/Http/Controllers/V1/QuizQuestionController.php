@@ -60,6 +60,9 @@ class QuizQuestionController extends SuperController
             if (strtotime(strval($quiz->attempts->first()->started_at)) + ($quiz->minutes * 60) < time()) {
                 return $this->error('Quiz time has expired', 401);
             }
+            else if ($quiz->attempts->first()->stopped_at) {
+                return $this->error('Quiz has ended');
+            }
         }
 
         $attempt = UserQuizAttempt::find($request->attempt_id);
