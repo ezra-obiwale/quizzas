@@ -33,9 +33,10 @@ $api->version('v1', function (Router $api) {
 
         $api->post('user/change-password', 'Auth\UserController@changePassword');
         $api->get('user/quizzes', 'Auth\UserController@quizzes');
-        $api->get('users/attempted-quizzes', 'QuizController@attemptedQuizzes');
+        $api->get('user/attempted-quizzes', 'QuizController@attemptedQuizzes');
 
         $api->resource('quizzes', 'QuizController');
+        $api->post('quizzes/start', 'QuizController@start');
         $api->get('quizzes/{quiz}/questions', 'QuizController@questions');
         $api->get('quizzes/{quiz}/result/{attemptId}', 'QuizController@result');
         $api->get('quizzes/{quiz}/users', 'QuizController@usersWithAttempts');

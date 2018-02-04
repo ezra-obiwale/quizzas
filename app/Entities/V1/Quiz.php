@@ -6,7 +6,7 @@ use Laraquick\Models\WithSoftDeletes;
 
 class Quiz extends WithSoftDeletes
 {
-    protected $fillable = ['name', 'minutes'];
+    protected $fillable = ['user_id', 'name', 'minutes'];
     protected $table = 'quizzes';
 
     public function user()
@@ -31,7 +31,7 @@ class Quiz extends WithSoftDeletes
     }
 
     public function attempts() {
-        return $this->hasMany(UserQuizAtempt::class);
+        return $this->hasMany(UserQuizAttempt::class);
     }
 
 }

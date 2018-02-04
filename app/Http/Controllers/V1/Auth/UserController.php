@@ -64,7 +64,7 @@ class UserController extends SuperController
             'password' => $request->new_password
         ]);
 
-        return $this->success();
+        return $this->success([]);
     }
 
     /**
@@ -75,7 +75,7 @@ class UserController extends SuperController
     public function quizzes()
     {
         $quizzes = Auth::user()->quizzes()->simplePaginate();
-        return $this->paginatedList($quizzes->all());
+        return $this->paginatedList($quizzes->toArray());
     }
 
     /**
@@ -86,7 +86,7 @@ class UserController extends SuperController
     public function attemptedQuizzes()
     {
         $quizes = Auth::user()->attemptedQuizzes()->simplePaginate();
-        return $this->paginatedList($quizzes->all());
+        return $this->paginatedList($quizzes->toArray());
     }
 
     public function attemptedQuestionsAndAnswers($quizId, $attemptId)
@@ -96,6 +96,6 @@ class UserController extends SuperController
             ->where('attempt_id', $attemptId)
             ->simplePaginate();
 
-        return $this->paginatedList($QAs->all());
+        return $this->paginatedList($QAs->toArray());
     }
 }

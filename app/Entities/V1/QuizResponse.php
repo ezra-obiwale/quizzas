@@ -6,7 +6,7 @@ use Laraquick\Models\WithSoftDeletes;
 
 class QuizResponse extends WithSoftDeletes
 {
-    protected $fillable = ['attempt_id', 'quiz_question_id', 'answer', 'passed'];
+    protected $fillable = ['user_id', 'quiz_id', 'attempt_id', 'quiz_question_id', 'answer', 'passed'];
 
     public function question()
     {
