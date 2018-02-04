@@ -72,13 +72,13 @@ class QuizQuestionController extends SuperController
         // has old response
         if ($response) {
             $passed = false;
-            // got the answer corrent initially
-            if ($response->answer == $quizQuestion) {
+            // got the answer correctly initially
+            if ($response->answer == $quizQuestion->answer) {
                 // remove from passed questions
                 $attempt->passed_questions--;
             }
             $response->answer = $request->answer;
-            if ($response->answer == $quizQuestion) {
+            if ($response->answer == $quizQuestion->answer) {
                 // increased passed questions
                 $attempt->passed_questions++;
                 $passed = true;
