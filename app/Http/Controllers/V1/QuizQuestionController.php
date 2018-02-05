@@ -31,8 +31,12 @@ class QuizQuestionController extends SuperController
         $data['user_id'] = Auth::id();
     }
 
-    public function responses(QuizQuestion $quizQuestion)
+    public function responses($quizQuestionId)
     {
+        if (!$quizQuestion = QuizQuestion::with('responses')->find($quizQuestionId)) {
+            return $this->notFoundError();
+        }
+        
         $responses = $quizQuestion->responses()
             ->where('user_id', Auth::id())
             ->simplePaginate();

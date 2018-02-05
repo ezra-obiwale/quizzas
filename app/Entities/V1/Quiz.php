@@ -23,7 +23,7 @@ class Quiz extends WithSoftDeletes
     public function usersWithAttempts()
     {
         return $this->belongsToMany(User::class, 'user_quiz_attempts')
-            ->withTimestamps()
+            ->withPivot(['started_at', 'stopped_at', 'total_questions', 'attempted_questions', 'passed_questions'])
             ->as('attempt');
     }
 

@@ -43,7 +43,7 @@ class QuizController extends SuperController
     {
         $i =1;
         while ($this->nameExists($data['name'])) {
-            $data['name'] = $data['name'] . "-" . $i++;
+            $data['name'] = $data['name'] . " " . $i++;
         }
     }
 
@@ -111,8 +111,10 @@ class QuizController extends SuperController
         if (!$quiz = Quiz::find($quizId)) {
             return $this->notFoundError();
         }
+        else if (!$attempt = $quiz->attempts()->find($attemptId)) {
+            return $this->notFoundError();
+        }
 
-        $attempt = $quiz->attempts()->find($attemptId);
         if (!$attempt->stopped_at) {
             $attempt->stopped_at = now();
             $attempt->save();

@@ -44,7 +44,7 @@ $api->version('v1', function (Router $api) {
         $api->get('quizzes/{quizId}/attempted/{attemptId}/questions-and-answers', 'Auth\UserController@attemptedQuestionsAndAnswers');
 
         $api->resource('quiz-questions', 'QuizQuestionController', ['except' => ['index']]);
-        $api->get('quiz-questions/{quizQuestion}/responses', 'QuizQuestionController@responses');
+        $api->get('quiz-questions/{quizQuestionId}/responses', 'QuizQuestionController@responses');
         $api->post('quiz-questions/{quizQuestionId}/respond', 'QuizQuestionController@respond');
     });
 });
