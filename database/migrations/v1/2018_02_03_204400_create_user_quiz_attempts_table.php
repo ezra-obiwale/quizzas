@@ -18,7 +18,7 @@ class CreateUserQuizAttemptsTable extends Migration
 
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('quiz_id');
-            $table->timestamp('started_at');
+            $table->timestamp('started_at')->nullable();
             $table->timestamp('stopped_at')->nullable();
             $table->integer('total_questions')->nullable();
             $table->integer('attempted_questions')->default(0)->nullable();

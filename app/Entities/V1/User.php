@@ -124,6 +124,7 @@ class User extends TCGUser implements JWTSubject
     {
         return $this->belongsToMany(Quiz::class, 'user_quiz_attempts')
             ->withTimestamps()
+            ->withPivot(['started_at', 'stopped_at', 'total_questions', 'attempted_questions', 'passed_questions'])
             ->as('attempted_quizzes');
     }
 
